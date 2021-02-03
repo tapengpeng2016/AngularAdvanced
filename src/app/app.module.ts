@@ -1,13 +1,16 @@
-import { HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { InterceptorService } from './core/interceptors/interceptor.service';
-import { LoginModule } from './login/login.module';
-import { BrowserModule } from '@angular/platform-browser';
+import { UserEffect } from './store/user/user.effect';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-
+import { BrowserModule } from '@angular/platform-browser';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtools, StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LayoutModule } from './layout/layout.module';
-import { HttpClientModule } from '@angular/common/http';
+import { InterceptorService } from './core/interceptors/interceptor.service';
+import { LoginModule } from './login/login.module';
+import { userReducer } from './store/user/user.reducer';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -16,7 +19,10 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
-    LoginModule
+    LoginModule,
+    StoreModule.forRoot({user: userReducer}),
+    StoreDevtoolsModule.instrument(),
+    EffectsModule.forRoot([UserEffect])
   ],
   providers: [
     {
