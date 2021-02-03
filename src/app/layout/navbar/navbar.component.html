@@ -1,0 +1,9 @@
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="#">{{ title | async}}</a>
+    <!-- <div>{{countToShow}}</div> -->
+    <button (click)="changeTitle()">Changer titre</button>
+    <div>
+      <input type="text" class="form-control" [formControl]="search"/>
+    </div>
+
+</nav>

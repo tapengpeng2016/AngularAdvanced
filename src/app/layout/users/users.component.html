@@ -1,0 +1,8 @@
+<button (click)="addUser()">Ajouter un utilisateur</button>
+
+<app-color [(ngModel)]="color"></app-color>
+
+{{color}}
+
+<app-user-card  *ngFor="let u of users$ | async" [user]='u' (delete)="deleteUser($event)"></app-user-card>
+

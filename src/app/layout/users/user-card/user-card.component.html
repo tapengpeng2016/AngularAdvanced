@@ -1,0 +1,7 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">{{ user?.name }}</h5>
+    <p class="card-text">{{ user?.email }}</p>
+    <button class="btn btn-danger" (click)="deleteUser(user?.id)">Supprimer</button>
+  </div>
+</div>
