@@ -34,41 +34,39 @@ export class UserService{
     this.url += '/users';
   }
 
-  getAllUsers(): void{
-    this.http.get<User[]>(this.url).subscribe((users) => {
-      this._allUsers$.next(users);
-    });
+  getAllUsers(): Observable<User[]>{
+    return this.http.get<User[]>(this.url);
   }
 
-   addNewUser(payload: { name: string, email: string}): void{
-     this.http
-    .post(this.url + '11', payload)
-    .pipe(
-        tap(() => this.notificationService.success('Utilisateur bien créé !')),
-        catchError(() => throwError(() => this.notificationService.error('Erreur'))
-          )
-        // catchError(() => {
-        //   this.notificationService.error('Erreur');
-        //   return EMPTY;
-        // })
-    )
-    .subscribe((user: User) => {
-        const users = this._allUsers$.value;
-        this._allUsers$.next([...users, user]);
-    })
+   addNewUser(payload: User): Observable<User>{
+    return  this.http
+    .post(this.url, payload);
+    // .pipe(
+    //     tap(() => this.notificationService.success('Utilisateur bien créé !')),
+    //     catchError(() => throwError(() => this.notificationService.error('Erreur'))
+    //       )
+    //     // catchError(() => {
+    //     //   this.notificationService.error('Erreur');
+    //     //   return EMPTY;
+    //     // })
+    // )
+    // .subscribe((user: User) => {
+    //     const users = this._allUsers$.value;
+    //     this._allUsers$.next([...users, user]);
+    // })
    }
 
-   deleteUser(id: number): void {
-     this.http.delete(this.url + '/${id}')
-     .pipe(
-      tap(
-        () => this.notificationService.success('Vous avez supprimé un utilisateur'),
-        catchError(() => throwError(() => this.notificationService.error('Une erreur est survenue'))
-     )))
-     .subscribe(() => {
-       const users = this._allUsers$.value.filter((u: User) => u.id !== id);
-       this._allUsers$.next(users);
-     });
+   deleteUser(id: number): Observable<void> {
+     return this.http.delete<void>(this.url + '/${id}');
+    //  .pipe(
+    //   tap(
+    //     () => this.notificationService.success('Vous avez supprimé un utilisateur'),
+    //     catchError(() => throwError(() => this.notificationService.error('Une erreur est survenue'))
+    //  )))
+    //  .subscribe(() => {
+    //    const users = this._allUsers$.value.filter((u: User) => u.id !== id);
+    //    this._allUsers$.next(users);
+    //  });
    }
 
 

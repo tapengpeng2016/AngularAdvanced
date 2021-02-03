@@ -1,7 +1,10 @@
+import { UserState } from './../../store/user/user.state';
+import { GetUsers, AddUser, DeleteUser } from './../../store/user/user.action';
 import { User } from './../../core/models/user.model';
 import { Observable } from 'rxjs';
 import { UserService } from './../../core/services/user.service';
 import { Component, OnInit } from '@angular/core'
+import { Select, Selector, Store } from '@ngxs/store';
 
 @Component({
     selector: 'app-users',
@@ -9,12 +12,14 @@ import { Component, OnInit } from '@angular/core'
 })
 export class UsersComponent implements OnInit {
   color: string;
-    users$: Observable<User[]> = this.userService.allUsers$;
-    constructor(protected userService: UserService) { }
+    @Select(UserState.getUserList)  users$: Observable<User[]>;
+
+    constructor(protected userService: UserService,
+                private store: Store) { }
 
     ngOnInit(): void {
+      this.store.dispatch(new GetUsers());
 
-      this.userService.getAllUsers();
       this.userService.search$.subscribe((val) => {
         console.log('in user component', val);
       });
@@ -22,10 +27,12 @@ export class UsersComponent implements OnInit {
     }
 
     addUser(): void {
-      this.userService.addNewUser({ name: 'hsa', email: 'hsa@gmail.com'});
+      this.store.dispatch(new AddUser({ name: 'hsa', email: 'hsa@gmail.com'}));
+
+      // this.userService.addNewUser({ name: 'hsa', email: 'hsa@gmail.com'});
     }
 
     deleteUser(id: number): void{
-      this.userService.deleteUser(id);
+      this.store.dispatch(new DeleteUser(id));
     }
 }

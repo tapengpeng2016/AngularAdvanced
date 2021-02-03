@@ -1,3 +1,4 @@
+import { UserState } from './store/user/user.state';
 import { HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from './core/interceptors/interceptor.service';
 import { LoginModule } from './login/login.module';
@@ -8,6 +9,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LayoutModule } from './layout/layout.module';
 import { HttpClientModule } from '@angular/common/http';
+import { NgxsModule } from '@ngxs/store';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 @NgModule({
   declarations: [
     AppComponent,
@@ -16,7 +19,9 @@ import { HttpClientModule } from '@angular/common/http';
     HttpClientModule,
     BrowserModule,
     AppRoutingModule,
-    LoginModule
+    LoginModule,
+    NgxsModule.forRoot([UserState]),
+    NgxsReduxDevtoolsPluginModule.forRoot()
   ],
   providers: [
     {
